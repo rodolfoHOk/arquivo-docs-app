@@ -1,0 +1,103 @@
+<!-- ToolBar -->
+<mat-toolbar class="toolbar" color="primary">
+  <button mat-icon-button matTooltip="Menu" (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="flex-space"></span>
+  <span>Sistema de Gestão de Arquivo de Documentos</span>
+  <span class="flex-space"></span>
+</mat-toolbar>
+
+<!-- SideNav -->
+<mat-drawer-container>
+  <!-- SideNav Drawer -->
+  <mat-drawer #drawer mode="side" class="sidenav">
+    <!-- Home -->
+    <div>
+      <button mat-button color="primary" class="button-sidenav"
+              routerLink="/home">
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </button>
+    </div>
+
+    <div class="div-menu"></div>
+    
+    <!-- Cliente -->
+    <div>
+      <button mat-button color="primary" class="button-sidenav"
+              [matMenuTriggerFor]="clientes">
+        <mat-icon>business</mat-icon>
+        <span>Cliente</span>
+      </button>
+      <!-- Submenu -->
+      <mat-menu #clientes xPosition="after">
+        <!-- Pesquisar -->
+        <div>
+          <button mat-stroked-button color="primary" class="button-sidenav" 
+                  routerLink="/clientes/list">
+            <mat-icon>search</mat-icon>
+            <span>Pesquisar</span>
+          </button>
+        </div>
+        <!-- Cadastrar -->
+        <div>
+          <button mat-stroked-button color="primary" class="button-sidenav" 
+                  routerLink="/clientes/form">
+            <mat-icon>add_business</mat-icon>
+            <span>Cadastrar</span>
+          </button>
+        </div>
+      </mat-menu>
+    </div>
+    <!-- Documento -->
+    <div>
+      <button mat-button color="primary" class="button-sidenav"
+              [matMenuTriggerFor]="documentos">
+        <mat-icon>library_books</mat-icon>
+        <span>Documento</span>
+      </button>
+      <!-- Submenu -->
+      <mat-menu #documentos xPosition="after">
+        <!-- Pesquisar -->
+        <div>
+          <button mat-stroked-button color="primary" class="button-sidenav"
+                  routerLink="/documentos/list">
+            <mat-icon>manage_search</mat-icon>
+            <span>Pesquisar</span>
+          </button>
+        </div>
+        <!-- Cadastrar -->
+        <div>
+          <button mat-stroked-button color="primary" class="button-sidenav"
+                  routerLink="/documentos/form">
+            <mat-icon>note_add</mat-icon>
+            <span>Cadastrar</span>
+          </button>
+        </div>
+      </mat-menu>
+    </div>
+    <!-- Relatório -->
+    <div>
+      <button mat-button color="primary" class="button-sidenav"
+              routerLink="/relatorio">
+        <mat-icon>summarize</mat-icon>
+        <span>Relatório</span>
+      </button>
+    </div>
+    <!-- Informação -->
+    <div class="div-menu-bottom">
+      {{ data | date: "dd/MM/yyyy" }}
+      {{ data | date: "HH:mm" }}
+    </div>
+  </mat-drawer>
+  <!-- Content -->
+  <mat-drawer-content class="content">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="footer">
+      Copyright HiOk-Tec "2020-2021"
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

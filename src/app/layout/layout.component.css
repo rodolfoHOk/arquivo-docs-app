@@ -1,0 +1,65 @@
+.flex-space {
+  flex: 1 1 auto;
+}
+
+.toolbar {
+  height: 50px;
+}
+
+.sidenav {
+  height: 100%;
+  padding: 5px;
+}
+
+.content {
+  min-height: calc(100vh - 50px);
+  height: auto;
+}
+
+.container {
+  padding: 10px;
+}
+
+.div-menu {
+  margin-top: 10px;
+  padding: 6px 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.div-menu-bottom {
+  position: absolute;
+  bottom: 5px;
+  width: calc(100% - 30px);
+  background-color: #EEEEEE;
+  padding: 6px 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: small;
+}
+
+button span {
+  padding: 6px 10px;
+  text-align: center;
+}
+
+.button-sidenav {
+  margin-top: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #EEEEEE;
+  text-align: center;
+  font-weight: bold;
+  font-size: small;
+  color: #AAAAAA;
+}
+
+::ng-deep .mat-menu-content{
+  padding: 2px 5px;
+}
