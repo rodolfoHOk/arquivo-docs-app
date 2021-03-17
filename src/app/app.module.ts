@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ClientesModule } from './clientes/clientes.module';
@@ -19,6 +20,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { RelatorioComponent } from './relatorio/relatorio.component';
 
+import { ClientesService } from './clientes.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +32,7 @@ import { RelatorioComponent } from './relatorio/relatorio.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     MatToolbarModule,
     MatSidenavModule,
     MatButtonModule,
@@ -39,7 +43,9 @@ import { RelatorioComponent } from './relatorio/relatorio.component';
     DocumentosModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    ClientesService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

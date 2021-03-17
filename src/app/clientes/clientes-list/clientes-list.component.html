@@ -9,14 +9,14 @@
     <!-- Formulario -->
     <form [formGroup]="formulario" (ngSubmit)="buscar()">
       <!-- Campo nome -->
-      <mat-form-field appearance="fill" class="width-75">
+      <mat-form-field appearance="fill" class="width-full">
         <mat-label>Nome do cliente</mat-label>
         <input matInput maxlength="45" placeholder="Digite o nome do cliente"
-                formControlName="nome">
+                formControlName="nome" />
       </mat-form-field>
       <!-- Botão Buscar -->
       <div>
-        <button mat-raised-button type="submit" color="primary" class="width-25">
+        <button mat-raised-button type="submit" color="primary" >
           <mat-icon>search</mat-icon>
           Buscar
         </button>
@@ -26,15 +26,15 @@
 </mat-card>
 <br/>
 <!-- Card Resultado -->
-<mat-card *ngIf="!buscaVazia">
+<mat-card *ngIf="mostrarTabela">
   <!-- Título -->
   <mat-card-title>
     Resultado da pesquisa
   </mat-card-title>
   <mat-card-content>
     <!-- Tabela -->
-    <table mat-table [dataSource]="clientes" class="width-full">
- 
+    <table mat-table [dataSource]="clientes" class="width-full" #table="matTable">
+
       <!-- Coluna Id -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -62,19 +62,32 @@
       <!-- Coluna Caixas -->
       <ng-container matColumnDef="caixas">
         <th mat-header-cell *matHeaderCellDef> Caixas </th>
-        <td mat-cell *matCellDef="let cliente"> {{cliente.caixas}} </td>
+        <td mat-cell *matCellDef="let cliente; let i = index;">
+          <button mat-icon-button color="primary" matTooltip="buscar caixas"
+                  (click)="buscarCaixas(i, cliente.id)" 
+                  *ngIf="!temCaixas(i, cliente.caixas)">
+            <mat-icon>search</mat-icon>            
+          </button>
+          <p *ngIf="temCaixas(i, cliente.caixas)">
+            {{caixasId(cliente.caixas)}}
+          </p>
+        </td>
       </ng-container>
 
       <!-- Coluna Acoes -->
       <ng-container matColumnDef="acoes">
         <th mat-header-cell *matHeaderCellDef> Ações </th>
-        <td mat-cell *matCellDef="let cliente">
+        <td mat-cell *matCellDef="let cliente; let i = index;">
+          <button mat-icon-button color="basic" matTooltip="adicionar caixa" 
+                  (click)="adicionarCaixa(i, cliente.id)">
+            <mat-icon>add</mat-icon>
+          </button>
           <button mat-icon-button color="primary" matTooltip="editar" 
                   (click)="editar(cliente.id)">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button color="warn" matTooltip="deletar" 
-                  (click)="deletar(cliente.id)">
+                  (click)="deletar(i, cliente.id)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

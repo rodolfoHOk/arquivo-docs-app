@@ -3,14 +3,69 @@
 <mat-card>
   <!-- Titulo -->
   <mat-card-title>
-    Cadastrar Cliente
+    {{titulo}}
   </mat-card-title>
   <mat-card-content>
     <!-- Formulário -->
+    <form [formGroup]="formGroupDocs" (ngSubmit)="submeter()" #formDocs="ngForm">
+      <!-- ID -->
+      <mat-form-field appearance="fill" class="width-full" *ngIf="atualizar">
+        <mat-label>ID</mat-label>
+        <input matInput maxlength="45" [disabled]="true"
+               formControlName="id" />
+      </mat-form-field>
       <!-- Nome -->
+      <mat-form-field appearance="fill" class="width-full">
+        <mat-label>Nome</mat-label>
+        <input matInput maxlength="45" placeholder="Digite o nome do cliente"
+               formControlName="nome" />
+        <mat-error *ngIf="formGroupDocs.controls.nome.hasError('required')">
+          Campo nome é <strong>obrigatório</strong>!
+        </mat-error>
+      </mat-form-field>
       <!-- CNPJ -->
+      <mat-form-field appearance="fill" class="width-full">
+        <mat-label>CNPJ</mat-label>
+        <input matInput maxlength="45" placeholder="Digite o CNPJ do cliente"
+               formControlName="cnpj" />
+        <mat-error *ngIf="formGroupDocs.controls.cnpj.hasError('required')">
+          Campo CNPJ é <strong>obrigatório</strong>!
+        </mat-error>
+      </mat-form-field>
       <!-- Endereco -->
+      <mat-form-field appearance="fill" class="width-full">
+        <mat-label>Endereço</mat-label>
+        <input matInput maxlength="45" placeholder="Digite o endereço do cliente"
+               formControlName="endereco" />
+        <mat-error *ngIf="formGroupDocs.controls.endereco.hasError('required')">
+          Campo endereco é <strong>obrigatório</strong>!
+        </mat-error>
+      </mat-form-field>
+      <div><br /></div>
       <!-- Botao Cadastrar -->
+      <button mat-raised-button color="primary" class="width-buttom" 
+              type="submit" [disabled]="!formDocs.valid" *ngIf="!atualizar">
+        <mat-icon>add</mat-icon>
+        Cadastrar
+      </button>
       <!-- Botao Limpar -->
+      <button mat-raised-button color="accent" class="width-buttom" 
+              type="reset" *ngIf="!atualizar">
+        <mat-icon>clear</mat-icon>
+        Limpar
+      </button>
+      <!-- Botao Atualizar -->
+      <button mat-raised-button color="primary" class="width-buttom" 
+              type="submit" [disabled]="!formDocs.valid" *ngIf="atualizar">
+        <mat-icon>update</mat-icon>
+        Atualizar
+      </button>
+      <!-- Botao Cancelar -->
+      <button mat-raised-button color="accent" class="width-buttom" 
+              type="button" (click)="voltar()" *ngIf="atualizar">
+        <mat-icon>clear</mat-icon>
+        Cancelar
+      </button>
+    </form>
   </mat-card-content>
 </mat-card>
