@@ -1,1 +1,107 @@
-<p>documentos-form works!</p>
+<br />
+<!-- Card Cadastro -->
+<mat-card>
+  <!-- Titulo -->
+  <mat-card-title>
+    {{titulo}}
+  </mat-card-title>
+  <mat-card-content>
+    <!-- Formulário -->
+    <form [formGroup]="formGroupDocs" (ngSubmit)="submeter()" #formDocs="ngForm">
+      <!-- ID -->
+      <mat-form-field appearance="fill" class="width-full" *ngIf="atualizar">
+        <mat-label>ID</mat-label>
+        <input matInput maxlength="10" formControlName="id" />
+      </mat-form-field>
+      <!-- Cliente -->
+      <mat-form-field appearance="fill" class="width-half">
+        <mat-label>Nome do Cliente</mat-label>
+        <input #nome matInput maxlength="45" placeholder="Digite o nome do cliente"
+               formControlName="cliente" [matAutocomplete]="completeCliente" 
+               (keyup)="onChangeNomeCliente(nome.value)" />
+        <mat-autocomplete #completeCliente="matAutocomplete" 
+                          (optionSelected)="onClienteSelected($event.option.value)">
+          <mat-option *ngFor="let cliente of opcoesClienteFiltrado" [value]="cliente.nome">
+            {{cliente.nome}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="formGroupDocs.controls.cliente.hasError('required')">
+          Campo cliente é <strong>obrigatório</strong>!
+        </mat-error>
+      </mat-form-field>
+      <!-- Id Cliente -->
+      <mat-form-field appearance="fill" class="width-25">
+        <mat-label>ID Cliente</mat-label>
+        <input matInput maxlength="10" formControlName="idCliente" />
+      </mat-form-field>
+      <!-- Caixa -->
+      <mat-form-field appearance="fill" class="width-25">
+        <mat-label>Caixa</mat-label>
+        <input matInput maxlength="45" placeholder="Selecione a caixa do cliente"
+               formControlName="caixa" />
+        <mat-error *ngIf="formGroupDocs.controls.caixa.hasError('required')">
+          Campo caixa é <strong>obrigatório</strong>!
+        </mat-error>
+      </mat-form-field>
+      <!-- Nome -->
+      <mat-form-field appearance="fill" class="width-75">
+        <mat-label>Nome do Documento</mat-label>
+        <input matInput maxlength="45" placeholder="Digite o nome do documento"
+               formControlName="nome" />
+        <mat-error *ngIf="formGroupDocs.controls.nome.hasError('required')">
+          Campo nome é <strong>obrigatório</strong>!
+        </mat-error>
+      </mat-form-field>
+      <!-- Tipo -->
+      <mat-form-field appearance="fill" class="width-25">
+        <mat-label>Tipo</mat-label>
+        <input matInput maxlength="45" placeholder="Selecione o tipo de documento"
+               formControlName="tipo" />
+        <mat-error *ngIf="formGroupDocs.controls.tipo.hasError('required')">
+          Campo tipo de documento é <strong>obrigatório</strong>!
+        </mat-error>
+      </mat-form-field>
+      <!-- Data -->
+      <mat-form-field appearance="fill" class="width-25">
+        <mat-label>Data de Entrada</mat-label>
+        <input matInput maxlength="10" placeholder="Selecione data de entrada"
+               formControlName="data" />
+        <mat-error *ngIf="formGroupDocs.controls.data.hasError('required')">
+          Campo data é <strong>obrigatório</strong>!
+        </mat-error>
+      </mat-form-field>
+      <!-- Observacao -->
+      <mat-form-field appearance="fill" class="width-75">
+        <mat-label>Observação</mat-label>
+        <input matInput maxlength="45" placeholder="Digite a observação"
+               formControlName="observacao" />
+      </mat-form-field>
+      <div><br /></div>
+      <!-- Botao Cadastrar -->
+      <button mat-raised-button color="primary" class="width-buttom" 
+              type="submit" [disabled]="!formDocs.valid" *ngIf="!atualizar">
+        <mat-icon>add</mat-icon>
+        Cadastrar
+      </button>
+      <!-- Botao Limpar -->
+      <button mat-raised-button color="accent" class="width-buttom" 
+              type="reset" *ngIf="!atualizar">
+        <mat-icon>clear</mat-icon>
+        Limpar
+      </button>
+      <!-- Botao Atualizar -->
+      <button mat-raised-button color="primary" class="width-buttom" 
+              type="submit" [disabled]="!formDocs.valid" *ngIf="atualizar">
+        <mat-icon>update</mat-icon>
+        Atualizar
+      </button>
+      <!-- Botao Cancelar -->
+      <button mat-raised-button color="accent" class="width-buttom" 
+              type="button" (click)="voltar()" *ngIf="atualizar">
+        <mat-icon>clear</mat-icon>
+        Cancelar
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+

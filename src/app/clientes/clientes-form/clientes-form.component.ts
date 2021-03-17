@@ -16,7 +16,7 @@ import { Cliente } from '../cliente';
 export class ClientesFormComponent implements OnInit {
   
   @ViewChild('formDocs') formDocs?: NgForm;
-  formGroupDocs: FormGroup;
+  formGroupClientes: FormGroup;
   cliente: Cliente = new Cliente();
   titulo: string = 'Cadastrar Cliente';
   id: number = 0;
@@ -26,11 +26,11 @@ export class ClientesFormComponent implements OnInit {
     private formBuider : FormBuilder,
     private snackBar : MatSnackBar,
     private activatedRoute : ActivatedRoute,
-    private service : ClientesService,
     private router: Router,
+    private service : ClientesService,
     ){
-    this.formGroupDocs = this.formBuider.group({
-      "id": ['', Validators.nullValidator ], 
+    this.formGroupClientes = this.formBuider.group({
+      "id": [{ value:'', disabled: true }, Validators.nullValidator ], 
       "nome": ['', Validators.required ],
       "cnpj": ['', Validators.required ],
       "endereco": ['', Validators.required ]
@@ -49,10 +49,10 @@ export class ClientesFormComponent implements OnInit {
               .subscribe(
                 response => { 
                   this.cliente = response;
-                  this.formGroupDocs.controls['id'].setValue(this.cliente.id);
-                  this.formGroupDocs.controls['nome'].setValue(this.cliente.nome);
-                  this.formGroupDocs.controls['cnpj'].setValue(this.cliente.cnpj);
-                  this.formGroupDocs.controls['endereco'].setValue(this.cliente.endereco);
+                  this.formGroupClientes.controls['id'].setValue(this.cliente.id);
+                  this.formGroupClientes.controls['nome'].setValue(this.cliente.nome);
+                  this.formGroupClientes.controls['cnpj'].setValue(this.cliente.cnpj);
+                  this.formGroupClientes.controls['endereco'].setValue(this.cliente.endereco);
                 },
                 error => this.cliente = new Cliente()
               );
@@ -63,9 +63,9 @@ export class ClientesFormComponent implements OnInit {
   submeter() {
     // Atualizar
     if(this.atualizar) {
-      this.cliente.nome = this.formGroupDocs.value.nome;
-      this.cliente.cnpj = this.formGroupDocs.value.cnpj;
-      this.cliente.endereco = this.formGroupDocs.value.endereco;
+      this.cliente.nome = this.formGroupClientes.value.nome;
+      this.cliente.cnpj = this.formGroupClientes.value.cnpj;
+      this.cliente.endereco = this.formGroupClientes.value.endereco;
       this.service
             .atualizar(this.cliente)
             .subscribe(
@@ -90,9 +90,9 @@ export class ClientesFormComponent implements OnInit {
     }
     // Cadastrar
     else {
-      this.cliente.nome = this.formGroupDocs.value.nome;
-      this.cliente.cnpj = this.formGroupDocs.value.cnpj;
-      this.cliente.endereco = this.formGroupDocs.value.endereco;
+      this.cliente.nome = this.formGroupClientes.value.nome;
+      this.cliente.cnpj = this.formGroupClientes.value.cnpj;
+      this.cliente.endereco = this.formGroupClientes.value.endereco;
       this.service
             .salvar(this.cliente)
             .subscribe(
