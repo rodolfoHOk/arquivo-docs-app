@@ -7,6 +7,7 @@ import { DocumentosComponent } from './documentos.component';
 const routes: Routes = [
   { path: 'documentos', component: DocumentosComponent, children: [
     { path: 'form', component: DocumentosFormComponent },
+    { path: 'form/:id', component: DocumentosFormComponent },
     { path: 'list', component: DocumentosListComponent },
     { path: 'documentos', redirectTo: '/documentos/list', pathMatch: 'full' }
   ]},

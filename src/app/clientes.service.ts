@@ -17,7 +17,7 @@ export class ClientesService {
   ) { }
 
   buscar(nome: string): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(`${this.url}/nome?nome=${nome}`);
+    return this.http.get<Cliente[]>(`${this.url}?nome=${nome}`);
   }
 
   salvar(cliente: Cliente): Observable<Cliente>{
@@ -25,7 +25,7 @@ export class ClientesService {
   }
 
   deletar(id: number): Observable<any>{
-    return this.http.delete(`${this.url}/${id}`);
+    return this.http.delete<any>(`${this.url}/${id}`);
   }
 
   buscarPorId(id: number): Observable<Cliente>{

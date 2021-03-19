@@ -1,20 +1,35 @@
-.width-full {
+.wid-12 {
   width: 100%;
 }
 
-.width-half {
+.wid-10 {
+  width: 83%;
+}
+
+.wid-9 {
+  width: 75%
+}
+
+.wid-8 {
+  width: 66%;
+}
+
+.wid-6 {
   width: 50%;
 }
 
-.width-25 {
+.wid-4 {
+  width: 34%;
+}
+
+.wid-3 {
   width: 25%;
 }
 
-.width-75 {
-  width: 75%;
+.wid-2 {
+  width: 17%;
 }
 
-.width-buttom {
-  width: 120px;
+.btn {
   margin-right: 10px;
 }

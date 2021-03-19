@@ -15,7 +15,7 @@ import { Cliente } from '../cliente';
 
 export class ClientesFormComponent implements OnInit {
   
-  @ViewChild('formDocs') formDocs?: NgForm;
+  @ViewChild('formClientes') formClientes?: NgForm; // para acessar o resetForm()
   formGroupClientes: FormGroup;
   cliente: Cliente = new Cliente();
   titulo: string = 'Cadastrar Cliente';
@@ -80,7 +80,12 @@ export class ClientesFormComponent implements OnInit {
                 }, 3000);
               },
               error => {
-                this.snackBar.open('Erro ao tentar atualizar o cliente!', 'fechar', {
+                let mensagem: string = '';
+                error.error.mensagensErros.forEach((mErro: string) => {
+                  mensagem = mensagem + mErro + ', ';
+                });
+                mensagem = mensagem.substring(0,mensagem.length-2);
+                this.snackBar.open('Erro:\n' + mensagem, 'fechar', {
                   duration: 3000,
                   horizontalPosition: 'center',
                   verticalPosition: 'bottom'
@@ -103,11 +108,16 @@ export class ClientesFormComponent implements OnInit {
                   verticalPosition: 'bottom'
                 });
                 setTimeout(() => {
-                  this.formDocs?.resetForm();
+                  this.formClientes?.resetForm(); // reseta os valores e a validacao
                 }, 200);
               },
               error => {
-                this.snackBar.open('Erro: ' + error.error.mensagensErros[0], 'fechar', {
+                let mensagem: string = '';
+                error.error.mensagensErros.forEach((mErro: string) => {
+                  mensagem = mensagem + mErro + ', ';
+                });
+                mensagem = mensagem.substring(0,-2);
+                this.snackBar.open('Erro: ' + mensagem, 'fechar', {
                   duration: 3000,
                   horizontalPosition: 'center',
                   verticalPosition: 'bottom'

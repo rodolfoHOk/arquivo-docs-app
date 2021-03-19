@@ -17,7 +17,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
-
+import { MatSelectModule } from '@angular/material/select'; 
+import { MatDatepickerModule } from '@angular/material/datepicker'; 
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [DocumentosFormComponent, DocumentosListComponent, DocumentosComponent],
@@ -34,6 +36,9 @@ import { MatSnackBarModule} from '@angular/material/snack-bar';
     MatTableModule,
     MatTooltipModule,
     MatSnackBarModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
     DocumentosRoutingModule
   ],
   exports: [
