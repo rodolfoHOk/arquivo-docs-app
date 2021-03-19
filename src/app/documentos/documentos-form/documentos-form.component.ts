@@ -41,20 +41,20 @@ export const MY_FORMATS = {
 
 export class DocumentosFormComponent implements OnInit {
 
-  // Formulario de cadastro de documentos
   titulo: string = 'Cadastro de Documentos';
+  atualizar: boolean = false;
+  id: number = 0;
+  aguardando: boolean = true;
 
+  // Formulario de cadastro de documentos
   @ViewChild('formDocs')
   formDocs?: NgForm;
   formGroupDocs: FormGroup;
   
+  tiposDocumento: TipoDocumento[] = [];
   opcoesCliente: Cliente[] = [];
   opcoesClienteFiltrado: Cliente[] = [];
   caixasDoCliente: Caixa[] = [];
-  tiposDocumento: TipoDocumento[] = [];
-
-  atualizar: boolean = false;
-  id: number = 0;
   documento: Documento = new Documento();
 
   // Formulario de cadastro de tipos de documentos

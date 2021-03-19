@@ -20,7 +20,9 @@ import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select'; 
 import { MatDatepickerModule } from '@angular/material/datepicker'; 
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBar, MatProgressBarModule } from '@angular/material/progress-bar';
+ 
 @NgModule({
   declarations: [DocumentosFormComponent, DocumentosListComponent, DocumentosComponent],
   imports: [
@@ -39,6 +41,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatSelectModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
     DocumentosRoutingModule
   ],
   exports: [

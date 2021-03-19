@@ -90,7 +90,10 @@
       <!-- Botao Cadastrar -->
       <button mat-raised-button color="primary" class="btn" 
               type="submit" [disabled]="!formDocs.valid" *ngIf="!atualizar">
-        <mat-icon>add</mat-icon>
+        <mat-icon *ngIf="!aguardando">add</mat-icon>
+        <mat-icon *ngIf="aguardando">
+          <mat-progress-spinner color="primary" diameter="20"></mat-progress-spinner>
+        </mat-icon>
         Cadastrar
       </button>
       <!-- Botao Limpar -->
