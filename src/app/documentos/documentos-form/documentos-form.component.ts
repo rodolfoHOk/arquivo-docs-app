@@ -44,7 +44,11 @@ export class DocumentosFormComponent implements OnInit {
   titulo: string = 'Cadastro de Documentos';
   atualizar: boolean = false;
   id: number = 0;
-  aguardando: boolean = true;
+  aguardando: boolean = false;
+  carregandoDocumento: boolean = false;
+  carregandoTipos: boolean = true;
+  carregandoClientes: boolean = false;
+  carregandoCaixas: boolean = false;
 
   // Formulario de cadastro de documentos
   @ViewChild('formDocs')
@@ -69,7 +73,6 @@ export class DocumentosFormComponent implements OnInit {
     private formBuider : FormBuilder,
     private snackBar : MatSnackBar,
     private activatedRoute : ActivatedRoute,
-    private router: Router,
     private documentosService : DocumentosService,
     private clientesService : ClientesService,
   ) {
@@ -94,6 +97,7 @@ export class DocumentosFormComponent implements OnInit {
     idParam.subscribe( urlParams => {
       this.id = urlParams['id'];
       if(this.id){
+        this.carregandoDocumento = true;
         this.titulo = 'Atualizar Documento';
         this.atualizar = true;
         this.formGroupDocs.controls['nomeCliente'].disable();
@@ -113,8 +117,12 @@ export class DocumentosFormComponent implements OnInit {
                   this.formGroupDocs.controls['nome'].setValue(this.documento.nome);
                   this.formGroupDocs.controls['data'].setValue(this.documento.dtEntrada);
                   this.formGroupDocs.controls['observacao'].setValue(this.documento.observacao);
+                  this.carregandoDocumento = false;
                 },
-                error => this.documento = new Documento()
+                error => {
+                  this.documento = new Documento();
+                  this.carregandoDocumento = false;
+                }
               );
       }
     });
@@ -126,15 +134,18 @@ export class DocumentosFormComponent implements OnInit {
   onChangeNomeCliente(nomeCliente: string) {
     if(nomeCliente.length >= 3){
       if(nomeCliente.length === 3){
+        this.carregandoClientes = true;
         this.clientesService.buscar(nomeCliente)
           .subscribe(
             response => {
               this.opcoesCliente = response;
+              this.carregandoClientes = false;
             },
             error => {
               this.snackBar.open('Erro ao tentar buscar clientes!', 'fechar', {
                 duration: 2000
               });
+              this.carregandoClientes = false;
             }
           );
       }
@@ -160,6 +171,7 @@ export class DocumentosFormComponent implements OnInit {
   }
   
   submeter(){
+    this.aguardando = true;
     if(this.atualizar){    
       // atualizar
       this.documento.caixa = this.formGroupDocs.value.caixa;
@@ -173,6 +185,7 @@ export class DocumentosFormComponent implements OnInit {
             this.snackBar.open('Documento atualizado com sucesso!', 'fechar', {
               duration: 3000
             });
+            this.aguardando = false;
           },
           error => {
             let mensagem: string = '';
@@ -183,6 +196,7 @@ export class DocumentosFormComponent implements OnInit {
             this.snackBar.open('Erro: ' + mensagem, 'fechar', {
               duration: 3000
             });
+            this.aguardando = false;
           }
       );
 
@@ -199,6 +213,7 @@ export class DocumentosFormComponent implements OnInit {
             this.snackBar.open('Documento cadastrado com sucesso!', 'fechar', {
               duration: 3000
             });
+            this.aguardando = false;
           },
           error => {
             let mensagem: string = '';
@@ -209,6 +224,7 @@ export class DocumentosFormComponent implements OnInit {
             this.snackBar.open('Erro: ' + mensagem, 'fechar', {
               duration: 3000
             });
+            this.aguardando = false;
           }
       );
     }
@@ -224,15 +240,18 @@ export class DocumentosFormComponent implements OnInit {
   }
 
   private buscarTiposDocumento() : void {
+    this.carregandoTipos = true;
     this.documentosService.buscarTipos()
       .subscribe(
         response => {
           this.tiposDocumento = response;
+          this.carregandoTipos = false;
         },
         error => {
           this.snackBar.open('Erro ao tentar adquidir tipos de documento!', 'fechar', {
             duration: 2000
           });
+          this.carregandoTipos = false;
         }
     );
   }
@@ -243,29 +262,22 @@ export class DocumentosFormComponent implements OnInit {
   }
   
   private buscarCaixasCliente(idCliente: number): void {
+    this.carregandoCaixas = true;
     this.clientesService.buscarCaixasPorClienteId(idCliente)
       .subscribe(
         response => {
           this.caixasDoCliente = response;
+          this.carregandoCaixas = false;
         },
         error =>{
           this.snackBar.open('Erro ao tentar adquidir caixas do cliente!', 'fechar', {
             duration: 2000
           });
+          this.carregandoCaixas = false;
         }
       );
   }
     
-  private formatarData(data: any): string {
-    const dia: number = data._i.date;
-    const mes : number = data._i.month + 1;
-    const ano: number = data._i.year;
-    if (mes < 10) {
-      return dia+'/'+mes+'/'+ano
-    }
-    return dia+'/'+mes+'/'+ano
-  }
-
   // Formulario Tipo Documento
 
   mostrarFormularioTipo(){
@@ -273,6 +285,7 @@ export class DocumentosFormComponent implements OnInit {
   }
 
   submeterTipo(){
+    this.aguardando = true;
     this.novoTipo.nome = this.formGroupTipos.value.nome;
     this.documentosService.salvarTipos(this.novoTipo)
       .subscribe(
@@ -281,11 +294,13 @@ export class DocumentosFormComponent implements OnInit {
             duration: 3000
           });
           this.buscarTiposDocumento();
+          this.aguardando = false;
         },
         error => {
           this.snackBar.open('Erro ao tentar cadastrar novo tipo de documento!', 'fechar', {
             duration: 3000
           });
+          this.aguardando = false;
         }
       )
     this.mostrarFormTipo = false;

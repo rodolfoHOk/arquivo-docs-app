@@ -16,8 +16,11 @@
       </mat-form-field>
       <!-- Botão Buscar -->
       <div>
-        <button mat-raised-button type="submit" color="primary" >
-          <mat-icon>search</mat-icon>
+        <button mat-raised-button type="submit" color="primary" [disabled]="carregando">
+          <mat-icon *ngIf="!carregando">search</mat-icon>
+          <mat-icon *ngIf="carregando">
+            <mat-spinner color="primary" diameter="20"></mat-spinner>
+          </mat-icon>
           Buscar
         </button>
       </div>
@@ -25,6 +28,7 @@
   </mat-card-content>
 </mat-card>
 <br/>
+
 <!-- Card Resultado -->
 <mat-card *ngIf="mostrarTabela">
   <!-- Título -->
@@ -32,6 +36,12 @@
     Resultado da pesquisa
   </mat-card-title>
   <mat-card-content>
+    <!-- Barra aguardando -->
+    <div class="width-full">
+      <mat-progress-bar mode="indeterminate" 
+          *ngIf="carregandoCaixas||deletando||adicionandoCaixa">
+      </mat-progress-bar>
+    </div>
     <!-- Tabela -->
     <table mat-table [dataSource]="clientes" class="width-full" #table="matTable">
 

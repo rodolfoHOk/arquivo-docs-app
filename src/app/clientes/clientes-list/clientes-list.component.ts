@@ -14,11 +14,19 @@ import { Cliente } from '../cliente';
 })
 export class ClientesListComponent implements OnInit {
 
+  carregando: boolean = false;
+  carregandoCaixas: boolean = false;
+  deletando: boolean = false;
+  adicionandoCaixa: boolean = false;
+
+  // Formulario
   @ViewChild('table') table?: MatTable<any>;
   formulario: FormGroup;
-  clientes: Cliente[] = [];
+  
+  // Tabela
   colunas: string[] = ['id', 'nome', 'cnpj', 'endereco', 'caixas', 'acoes'];
   mostrarTabela: boolean = false;
+  clientes: Cliente[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,10 +40,10 @@ export class ClientesListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formulario.reset();
   }
 
   buscar(){
+    this.carregando = true;
     this.mostrarTabela = false;
     let nome: string = this.formulario.value.nome;
     if(nome === null){
@@ -52,10 +60,12 @@ export class ClientesListComponent implements OnInit {
                   horizontalPosition: "center",
                   verticalPosition: "bottom",
                 });
+                this.carregando = false;
               }
               else {
                 this.mostrarTabela = true;
                 this.formulario.reset();
+                this.carregando = false;
               }
             },
             error => {
@@ -64,6 +74,7 @@ export class ClientesListComponent implements OnInit {
                 horizontalPosition: "center",
                 verticalPosition: "bottom",
               });
+              this.carregando = false;
             }
           );
   }
@@ -86,7 +97,7 @@ export class ClientesListComponent implements OnInit {
   }
 
   buscarCaixas(index: number, clienteId: number){
-    
+    this.carregandoCaixas = true;
     this.service
           .buscarCaixasPorClienteId(clienteId)
           .subscribe(
@@ -94,6 +105,7 @@ export class ClientesListComponent implements OnInit {
               const caixas = response;
               if(caixas.length > 0){
                 this.clientes[index].caixas = caixas;
+                this.carregandoCaixas = false;
               } 
               else {
                 this.snackBar.open('Cliente não possui caixas!', 'fechar', {
@@ -101,6 +113,7 @@ export class ClientesListComponent implements OnInit {
                   horizontalPosition: "center",
                   verticalPosition: "bottom",
                 });
+                this.carregandoCaixas = false;
               }
             },
             error => {
@@ -109,6 +122,7 @@ export class ClientesListComponent implements OnInit {
                 horizontalPosition: "center",
                 verticalPosition: "bottom",
               });
+              this.carregandoCaixas = false;
             }
           );
   }
@@ -118,6 +132,7 @@ export class ClientesListComponent implements OnInit {
   }
 
   deletar(index: number, id: number){
+    this.deletando = true;
     this.service
           .deletar(id)
           .subscribe(
@@ -129,6 +144,7 @@ export class ClientesListComponent implements OnInit {
               });
               this.clientes.splice(index, 1);
               this.table?.renderRows();
+              this.deletando = false;
             },
             error =>{
               this.snackBar.open('Erro ao tentar deletar o cliente!', 'fechar', {
@@ -136,11 +152,13 @@ export class ClientesListComponent implements OnInit {
                 horizontalPosition: "center",
                 verticalPosition: "bottom",
               });
+              this.deletando = false;
             }
           );
   }
 
   adicionarCaixa(index: number, idCliente: number){
+    this.adicionandoCaixa = true;
     const caixa: Caixa = new Caixa;
     caixa.cliente = idCliente;
     this.service
@@ -155,6 +173,7 @@ export class ClientesListComponent implements OnInit {
               const caixas: any = this.clientes[index].caixas;
               caixas.push(response);
               this.clientes[index].caixas = caixas;
+              this.adicionandoCaixa = false;
             },
             error => {
               this.snackBar.open('Erro ao tentar adicionar uma nova caixa!', 'fechar', {
@@ -162,6 +181,7 @@ export class ClientesListComponent implements OnInit {
                 horizontalPosition: "center",
                 verticalPosition: "bottom",
               });
+              this.adicionandoCaixa = false;
             }
           )
   }

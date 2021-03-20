@@ -8,6 +8,10 @@
   <mat-card-content>
     <!-- Formulário -->
     <form [formGroup]="formGroupClientes" (ngSubmit)="submeter()" #formClientes="ngForm">
+      <!-- Barra carregando cliente -->
+      <div class="bar">
+        <mat-progress-bar mode="indeterminate" *ngIf="carregando"></mat-progress-bar>
+      </div>
       <!-- ID -->
       <mat-form-field appearance="fill" class="width-full" *ngIf="atualizar">
         <mat-label>ID</mat-label>
@@ -44,8 +48,11 @@
       <div><br /></div>
       <!-- Botao Cadastrar -->
       <button mat-raised-button color="primary" class="width-buttom" 
-              type="submit" [disabled]="!formClientes.valid" *ngIf="!atualizar">
-        <mat-icon>add</mat-icon>
+              type="submit" [disabled]="!formClientes.valid||aguardando" *ngIf="!atualizar">
+        <mat-icon *ngIf="!aguardando">add</mat-icon>
+        <mat-icon *ngIf="aguardando">
+          <mat-spinner color="primary" diameter="20"></mat-spinner>
+        </mat-icon>
         Cadastrar
       </button>
       <!-- Botao Limpar -->
@@ -56,8 +63,11 @@
       </button>
       <!-- Botao Atualizar -->
       <button mat-raised-button color="primary" class="width-buttom" 
-              type="submit" [disabled]="!formClientes.valid" *ngIf="atualizar">
-        <mat-icon>update</mat-icon>
+              type="submit" [disabled]="!formClientes.valid||aguardando" *ngIf="atualizar">
+        <mat-icon *ngIf="!aguardando">update</mat-icon>
+        <mat-icon *ngIf="aguardando">
+          <mat-spinner color="primary" diameter="20"></mat-spinner>
+        </mat-icon>
         Atualizar
       </button>
       <!-- Botao Cancelar -->

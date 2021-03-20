@@ -33,3 +33,7 @@
 .btn {
   margin-right: 10px;
 }
+
+.bar {
+  display: flex;
+}

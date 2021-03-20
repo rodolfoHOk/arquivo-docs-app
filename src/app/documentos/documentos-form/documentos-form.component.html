@@ -8,11 +8,23 @@
   <mat-card-content>
     <!-- Formulário -->
     <form [formGroup]="formGroupDocs" (ngSubmit)="submeter()" #formDocs="ngForm">
+      <!-- Barra carregando documento -->
+      <div class="bar">
+        <mat-progress-bar mode="indeterminate" *ngIf="carregandoDocumento"></mat-progress-bar>
+      </div>
       <!-- ID -->
       <mat-form-field appearance="fill" class="wid-12" *ngIf="atualizar">
         <mat-label>ID</mat-label>
         <input matInput maxlength="10" formControlName="id" />
       </mat-form-field>
+      <!-- Barras -->
+      <div class="bar">
+        <!-- Carregando cliente -->
+        <mat-progress-bar mode="indeterminate" *ngIf="carregandoClientes" class="wid-8"></mat-progress-bar>
+        <span class="wid-2"></span>
+        <!-- Carregando caixa-->
+        <mat-progress-bar mode="indeterminate" *ngIf="carregandoCaixas" class="wid-2"></mat-progress-bar>
+      </div>
       <!-- Nome Cliente -->
       <mat-form-field appearance="fill" class="wid-8" >
         <mat-label>Nome do Cliente</mat-label>
@@ -47,6 +59,11 @@
           Campo caixa é <strong>obrigatório</strong>!
         </mat-error>
       </mat-form-field>
+      <!-- Barra carregando tipos de documentos -->
+      <div class="bar wid-12">
+        <span class="wid-9"></span>
+        <mat-progress-bar mode="indeterminate" *ngIf="carregandoTipos" class="wid-3"></mat-progress-bar>
+      </div>
       <!-- Nome -->
       <mat-form-field appearance="fill" class="wid-9">
         <mat-label>Nome do Documento</mat-label>
@@ -89,10 +106,10 @@
       <div><br /></div>
       <!-- Botao Cadastrar -->
       <button mat-raised-button color="primary" class="btn" 
-              type="submit" [disabled]="!formDocs.valid" *ngIf="!atualizar">
+              type="submit" [disabled]="!formDocs.valid||aguardando" *ngIf="!atualizar">
         <mat-icon *ngIf="!aguardando">add</mat-icon>
         <mat-icon *ngIf="aguardando">
-          <mat-progress-spinner color="primary" diameter="20"></mat-progress-spinner>
+          <mat-spinner color="primary" diameter="20"></mat-spinner>
         </mat-icon>
         Cadastrar
       </button>
@@ -110,8 +127,11 @@
       </button>
       <!-- Botao Atualizar -->
       <button mat-raised-button color="primary" class="btn" 
-              type="submit" [disabled]="!formDocs.valid" *ngIf="atualizar">
-        <mat-icon>update</mat-icon>
+              type="submit" [disabled]="!formDocs.valid||aguardando" *ngIf="atualizar">
+        <mat-icon *ngIf="!aguardando">update</mat-icon>
+        <mat-icon *ngIf="aguardando">
+          <mat-spinner color="primary" diameter="20"></mat-spinner>
+        </mat-icon>
         Atualizar
       </button>
       <!-- Botao Cancelar -->
@@ -154,7 +174,10 @@
       <!-- Botao Cadastrar Tipo -->
       <button mat-raised-button color="primary" class="btn" 
               type="submit" [disabled]="!formTipos.valid" >
-        <mat-icon>add</mat-icon>
+        <mat-icon *ngIf="!aguardando">add</mat-icon>
+        <mat-icon *ngIf="aguardando">
+          <mat-spinner color="primary" diameter="20"></mat-spinner>
+        </mat-icon>
         Cadastrar
       </button>
       <!-- Botao Limpar Tipo -->

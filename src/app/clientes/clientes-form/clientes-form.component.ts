@@ -14,13 +14,17 @@ import { Cliente } from '../cliente';
 
 
 export class ClientesFormComponent implements OnInit {
+
+  titulo: string = 'Cadastrar Cliente';
+  id: number = 0;
+  atualizar: boolean = false;
+  carregando: boolean = false;
+  aguardando: boolean = false;
+
   
   @ViewChild('formClientes') formClientes?: NgForm; // para acessar o resetForm()
   formGroupClientes: FormGroup;
   cliente: Cliente = new Cliente();
-  titulo: string = 'Cadastrar Cliente';
-  id: number = 0;
-  atualizar: boolean = false;
   
   constructor(
     private formBuider : FormBuilder,
@@ -42,6 +46,7 @@ export class ClientesFormComponent implements OnInit {
     idParam.subscribe( urlParams => {
       this.id = urlParams['id'];
       if(this.id){
+        this.carregando = true;
         this.titulo = 'Atualizar Cliente';
         this.atualizar = true;
         this.service
@@ -53,15 +58,20 @@ export class ClientesFormComponent implements OnInit {
                   this.formGroupClientes.controls['nome'].setValue(this.cliente.nome);
                   this.formGroupClientes.controls['cnpj'].setValue(this.cliente.cnpj);
                   this.formGroupClientes.controls['endereco'].setValue(this.cliente.endereco);
+                  this.carregando = false;
                 },
-                error => this.cliente = new Cliente()
-              );
+                error => {
+                  this.cliente = new Cliente();
+                  this.carregando = false;
+                }
+        );
       }
     });
   }
   
   submeter() {
     // Atualizar
+    this.aguardando = true;
     if(this.atualizar) {
       this.cliente.nome = this.formGroupClientes.value.nome;
       this.cliente.cnpj = this.formGroupClientes.value.cnpj;
@@ -75,6 +85,7 @@ export class ClientesFormComponent implements OnInit {
                   horizontalPosition: 'center',
                   verticalPosition: 'bottom'
                 });
+                this.aguardando = false;
                 setTimeout(() => {
                   this.router.navigate(['/clientes/list']);
                 }, 3000);
@@ -90,6 +101,7 @@ export class ClientesFormComponent implements OnInit {
                   horizontalPosition: 'center',
                   verticalPosition: 'bottom'
                 });
+                this.aguardando = false;
               }
             );
     }
@@ -107,6 +119,7 @@ export class ClientesFormComponent implements OnInit {
                   horizontalPosition: 'center',
                   verticalPosition: 'bottom'
                 });
+                this.aguardando = false;
                 setTimeout(() => {
                   this.formClientes?.resetForm(); // reseta os valores e a validacao
                 }, 200);
@@ -116,12 +129,13 @@ export class ClientesFormComponent implements OnInit {
                 error.error.mensagensErros.forEach((mErro: string) => {
                   mensagem = mensagem + mErro + ', ';
                 });
-                mensagem = mensagem.substring(0,-2);
+                mensagem = mensagem.substring(0, mensagem.length-2);
                 this.snackBar.open('Erro: ' + mensagem, 'fechar', {
                   duration: 3000,
                   horizontalPosition: 'center',
                   verticalPosition: 'bottom'
                 });
+                this.aguardando = false;
               }
             );
     }
