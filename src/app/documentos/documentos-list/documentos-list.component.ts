@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTable } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { ClientesService } from 'src/app/clientes.service';
 import { Cliente } from 'src/app/clientes/cliente';
 import { DocumentosService } from 'src/app/documentos.service';
@@ -28,6 +31,7 @@ export class DocumentosListComponent implements OnInit {
   documento: Documento = new Documento();
 
   // Tabela consulta
+  @ViewChild('table') table?: MatTable<any>;
   mostrarTabela: boolean = false;
   colunas: string[] = ['id', 'nome', 'tipo', 'cliente',
                        'caixa', 'data', 'observacao', 'acoes'];
@@ -38,6 +42,8 @@ export class DocumentosListComponent implements OnInit {
     private snackBar : MatSnackBar,
     private clientesService: ClientesService,
     private documentosService: DocumentosService,
+    private router: Router,
+    public dialog: MatDialog
   ) { 
     this.formGroupConDocs = this.formBuilder.group({
       "nomeCliente": [''],
@@ -187,10 +193,70 @@ export class DocumentosListComponent implements OnInit {
   }
 
   editar(idDocumento: number){
-    console.log('editando...');
+    this.router.navigate([`/documentos/form/${idDocumento}`]);
   }
 
-  deletar(index: number, idDocumento: number){
-    console.log('deletando...');
+  openDeleteDialog(index: number, idDocumento: number): void {
+    const dialogRef = this.dialog.open(DocumentosDeleteDialog, {
+      width: '',
+      height: '',
+      panelClass: 'panelDialog',
+      data: { index: index, idDocumento: idDocumento }
+    });
+
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result === 'deletado') {
+          this.documentos.splice(index, 1);
+          this.table?.renderRows();
+        }
+    });
   }
+}
+
+// Dialog
+@Component({
+  selector: 'app-documentos-delete-dialog',
+  templateUrl: 'documentos-delete-dialog.html'
+})
+export class DocumentosDeleteDialog {
+
+  deletando: boolean = false;
+
+  constructor (
+    public dialogRef: MatDialogRef<DocumentosListComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private documentosService: DocumentosService,
+    private snackBar: MatSnackBar,
+  ) {}
+
+  deletar (index: number, idDocumento: number) {
+    this.deletando = true;
+    this.documentosService.deletar(idDocumento)
+      .subscribe(
+        response => {
+          this.snackBar.open('Documento deletado com sucesso!', 'fechar', {
+            duration: 3000
+          });
+          this.deletando = false;
+          this.dialogRef.close('deletado');
+        },
+        error => {
+          this.snackBar.open('Erro ao tentar deletar o documento!', 'fechar', {
+            duration: 3000
+          });
+          this.deletando = false;
+          this.dialogRef.close();
+        }
+      );
+  }
+
+  cancelar(){
+    this.dialogRef.close();
+  }
+}
+
+export interface DialogData {
+  index: number;
+  idDocumento: number;
 }

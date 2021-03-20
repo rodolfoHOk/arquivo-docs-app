@@ -306,4 +306,9 @@ export class DocumentosFormComponent implements OnInit {
     this.mostrarFormTipo = false;
     this.formTipos?.resetForm();
   }
+
+  cancelar(){
+    this.formTipos?.resetForm();
+    this.mostrarFormTipo = false;
+  }
 }

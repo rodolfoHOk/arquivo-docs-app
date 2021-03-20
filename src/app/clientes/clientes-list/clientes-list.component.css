@@ -1,3 +1,8 @@
 .width-full {
   width: 100%;
 }
+
+.panelDialog {
+  width: auto;
+  height: auto;
+}

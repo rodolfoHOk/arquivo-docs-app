@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { DocumentosRoutingModule } from './documentos-routing.module';
 import { DocumentosFormComponent } from './documentos-form/documentos-form.component';
-import { DocumentosListComponent } from './documentos-list/documentos-list.component';
+import { DocumentosDeleteDialog, DocumentosListComponent } from './documentos-list/documentos-list.component';
 import { DocumentosComponent } from './documentos.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -22,9 +22,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
- 
+import { MatDialogModule } from '@angular/material/dialog'; 
+
+
 @NgModule({
-  declarations: [DocumentosFormComponent, DocumentosListComponent, DocumentosComponent],
+  declarations: [
+    DocumentosFormComponent,
+    DocumentosListComponent,
+    DocumentosComponent,
+    DocumentosDeleteDialog
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -43,6 +50,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatMomentDateModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatDialogModule,
     DocumentosRoutingModule
   ],
   exports: [

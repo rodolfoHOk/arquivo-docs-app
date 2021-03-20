@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -32,7 +33,8 @@ export class ClientesListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private service: ClientesService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.formulario = this.formBuilder.group({
       nome: ['', Validators.nullValidator]
@@ -131,30 +133,21 @@ export class ClientesListComponent implements OnInit {
     this.router.navigate([`/clientes/form/${id}`]);
   }
 
-  deletar(index: number, id: number){
-    this.deletando = true;
-    this.service
-          .deletar(id)
-          .subscribe(
-            response => {
-              this.snackBar.open('Cliente deletado com sucesso!', 'fechar', {
-                duration: 3000,
-                horizontalPosition: "center",
-                verticalPosition: "bottom",
-              });
-              this.clientes.splice(index, 1);
-              this.table?.renderRows();
-              this.deletando = false;
-            },
-            error =>{
-              this.snackBar.open('Erro ao tentar deletar o cliente!', 'fechar', {
-                duration: 3000,
-                horizontalPosition: "center",
-                verticalPosition: "bottom",
-              });
-              this.deletando = false;
-            }
-          );
+  openDeleteDialog(index: number, idCliente: number): void {
+    const dialogRef = this.dialog.open(ClientesDeleteDialog, {
+      width: '',
+      height: '',
+      panelClass: 'panelDialog',
+      data: { index: index, idCliente: idCliente }
+    });
+
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result === 'deletado') {
+          this.clientes.splice(index, 1);
+          this.table?.renderRows();
+        }
+    });
   }
 
   adicionarCaixa(index: number, idCliente: number){
@@ -185,5 +178,51 @@ export class ClientesListComponent implements OnInit {
             }
           )
   }
+}
 
+// Dialog
+@Component({
+  selector: 'app-clientes-delete-dialog',
+  templateUrl: 'clientes-delete-dialog.html'
+})
+export class ClientesDeleteDialog {
+
+  deletando: boolean = false;
+
+  constructor (
+    public dialogRef: MatDialogRef<ClientesListComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private clientesService: ClientesService,
+    private snackBar: MatSnackBar,
+  ) {}
+
+  deletar (index: number, idCliente: number) {
+    this.deletando = true;
+    this.clientesService.deletar(idCliente)
+      .subscribe(
+        response => {
+          this.snackBar.open('Cliente deletado com sucesso!', 'fechar', {
+            duration: 3000
+          });
+          this.deletando = false;
+          this.dialogRef.close('deletado');
+        },
+        error => {
+          this.snackBar.open('Erro ao tentar deletar o cliente', 'fechar', {
+            duration: 3000
+          });
+          this.deletando = false;
+          this.dialogRef.close();
+        }
+      );
+  }
+
+  cancelar(){
+    this.dialogRef.close();
+  }
+}
+
+export interface DialogData {
+  index: number;
+  idCliente: number;
 }

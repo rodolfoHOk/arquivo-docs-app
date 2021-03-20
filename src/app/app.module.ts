@@ -22,12 +22,16 @@ import { HomeComponent } from './home/home.component';
 import { RelatorioComponent } from './relatorio/relatorio.component';
 
 import { ClientesService } from './clientes.service';
+import { OutrasComponent } from './outras/outras.component';
+
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
     HomeComponent,
+    OutrasComponent,
     RelatorioComponent
   ],
   imports: [
@@ -40,6 +44,7 @@ import { ClientesService } from './clientes.service';
     MatIconModule,
     MatTooltipModule,
     MatMenuModule,
+    MatCardModule,
     ClientesModule,
     DocumentosModule,
     BrowserAnimationsModule

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ClientesRoutingModule } from './clientes-routing.module';
 import { ClientesFormComponent } from './clientes-form/clientes-form.component';
-import { ClientesListComponent } from './clientes-list/clientes-list.component';
+import { ClientesDeleteDialog, ClientesListComponent } from './clientes-list/clientes-list.component';
 import { ClientesComponent } from './clientes.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,10 +18,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
-  declarations: [ClientesFormComponent, ClientesListComponent, ClientesComponent],
+  declarations: [
+    ClientesFormComponent,
+    ClientesListComponent,
+    ClientesComponent,
+    ClientesDeleteDialog
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -36,6 +42,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatSnackBarModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
     ClientesRoutingModule
   ],
   exports: [

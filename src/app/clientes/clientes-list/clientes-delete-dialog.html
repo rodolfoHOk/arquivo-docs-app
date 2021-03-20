@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Confirmar</h2>
+<div mat-dialog-content>
+  <p>Confirma a exclusão do cliente id: {{data.idCliente}}?</p>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button color="warn" [disabled]="deletando"
+          (click)="deletar(data.index, data.idCliente)">
+    <mat-icon *ngIf="!deletando">delete</mat-icon>
+    <mat-icon *ngIf="deletando">
+      <mat-spinner color="primary" diameter="20"></mat-spinner>
+    </mat-icon>
+    Confirmar
+  </button>
+  <button mat-raised-button color="accent" (click)="cancelar()">
+    Cancelar
+    <mat-icon>close</mat-icon>
+  </button>
+<div>

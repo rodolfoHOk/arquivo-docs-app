@@ -37,3 +37,8 @@
 .bar {
   display: flex;
 }
+
+.panelDialog {
+  width: auto;
+  height: auto;
+}
