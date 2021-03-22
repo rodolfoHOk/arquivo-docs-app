@@ -1,0 +1,39 @@
+.btn {
+  float: right;
+}
+
+.space {
+  margin-left: 10px;
+}
+
+.wid-12 {
+  width: 100%;
+}
+
+.wid-10 {
+  width: 83%;
+}
+
+.wid-9 {
+  width: 75%
+}
+
+.wid-8 {
+  width: 66%;
+}
+
+.wid-6 {
+  width: 50%;
+}
+
+.wid-4 {
+  width: 34%;
+}
+
+.wid-3 {
+  width: 25%;
+}
+
+.wid-2 {
+  width: 17%;
+}

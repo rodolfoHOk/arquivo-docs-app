@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ClientesModule } from './clientes/clientes.module';
@@ -22,9 +23,15 @@ import { HomeComponent } from './home/home.component';
 import { RelatorioComponent } from './relatorio/relatorio.component';
 
 import { ClientesService } from './clientes.service';
-import { OutrasComponent } from './outras/outras.component';
+import { OutrasComponent, OutrasDeleteCaixaDialog, OutrasDeleteTipoDialog } from './outras/outras.component';
 
 import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -32,12 +39,15 @@ import { MatCardModule } from '@angular/material/card';
     LayoutComponent,
     HomeComponent,
     OutrasComponent,
+    OutrasDeleteTipoDialog,
+    OutrasDeleteCaixaDialog,
     RelatorioComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatButtonModule,
@@ -45,6 +55,12 @@ import { MatCardModule } from '@angular/material/card';
     MatTooltipModule,
     MatMenuModule,
     MatCardModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
     ClientesModule,
     DocumentosModule,
     BrowserAnimationsModule

@@ -8,8 +8,30 @@
 <mat-card>
   <mat-card-title>Deletar Tipo de Documento</mat-card-title>
   <mat-card-content>
-    <p>select do tipo</p>
-    <p>botao deletar tipo</p>
+    <!-- Formulario -->
+    <form [formGroup]="fromGroupTipo" (submit)="openDeletarTipoDialog()">
+      <!-- IdTipo -->
+      <mat-form-field appearance="fill" class="wid-12">
+        <mat-label>Tipo de Documento</mat-label>
+        <mat-select formControlName="idTipo" placeholder="Selecione o tipo de documento">
+          <mat-option *ngFor="let tipo of tiposDocumento" [value]="tipo.id">
+            {{tipo.nome}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="fromGroupTipo.controls.idTipo.hasError('required')">
+          Campo tipo de documento é obrigatório!
+        </mat-error>
+      </mat-form-field>
+      <!-- Botao Deletar-->
+      <button mat-raised-button color="warn" type="submit" 
+              [disabled]="deletandoTipo||!fromGroupTipo.valid">
+        <mat-icon *ngIf="!deletandoTipo">delete</mat-icon>
+        <mat-icon *ngIf="deletandoTipo">
+          <mat-spinner color="warn" diameter="20"></mat-spinner>
+        </mat-icon>
+        Deletar
+      </button>
+    </form>
   </mat-card-content>
 </mat-card>
 
@@ -18,8 +40,50 @@
 <mat-card>
   <mat-card-title>Deletar Caixa de um Cliente</mat-card-title>
   <mat-card-content>
-    <p>input autocomplete de clientes</p>
-    <p>select de caixas do cliente</p>
-    <p>botao deletar caixa</p>
+    <!-- Formulario -->
+    <form [formGroup]="formGroupCaixa" (ngSubmit)="openDeletarCaixaDialog()">
+      <!-- Nome do cliente -->
+      <mat-form-field appearance="fill" class="wid-8">
+        <mat-label>Nome do Cliente</mat-label>
+        <input matInput formControlName="nomeCliente" placeholder="Digite o nome do cliente"
+               [matAutocomplete]="completeNomeCliente" #nome
+               (keyup)="onChangeNomeCliente(nome.value)" />
+        <mat-autocomplete #completeNomeCliente="matAutocomplete"
+                            (optionSelected)="onClienteSelected($event.option.value)">
+          <mat-option *ngFor="let cliente of opcoesClientesFiltrado" [value]="cliente.nome">
+            {{cliente.nome}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="formGroupCaixa.controls.nomeCliente.hasError('required')">
+          Campo nome do cliente é obrigatório!
+        </mat-error>
+      </mat-form-field>
+      <!-- Id do cliente -->
+      <mat-form-field appearance="fill" class="wid-2">
+        <mat-label>Id do Cliente</mat-label>
+        <input matInput formControlName="idCliente" />
+      </mat-form-field>
+      <!-- Caixas -->
+      <mat-form-field appearance="fill" class="wid-2">
+        <mat-label>Caixas do Cliente</mat-label>
+        <mat-select formControlName="idCaixa" placeholder="Selecione a caixa">
+          <mat-option *ngFor="let caixa of caixasDoCliente" [value]="caixa.id">
+            {{caixa.id}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formGroupCaixa.controls.idCaixa.hasError('required')">
+          Selecionar campo caixa é obrigatório!
+        </mat-error>
+      </mat-form-field>
+      <!-- Botao deletar caixa-->
+      <button mat-raised-button color="warn" type="submit"
+              [disabled]="deletandoCaixa||!formGroupCaixa.valid">
+        <mat-icon *ngIf="!deletandoCaixa">delete</mat-icon>
+        <mat-icon *ngIf="deletandoCaixa">
+          <mat-spinner color="warn" diameter="20"></mat-spinner>
+        </mat-icon>
+        Deletar
+      </button>
+    </form>
   </mat-card-content>
 </mat-card>

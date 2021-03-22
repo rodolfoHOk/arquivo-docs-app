@@ -1,3 +1,33 @@
+<!-- Toolbar Título -->
 <mat-toolbar color="accent">
   <div>{{title}}</div>
 </mat-toolbar>
+<br />
+<!-- Card -->
+<mat-card>
+  <mat-card-content>
+    <h3>Relatório de Documentos no Sistema</h3>
+    <!-- Formulario -->
+    <form [formGroup]="formGroupRel" (ngSubmit)="baixarRelatorio()">
+      <!-- Do cliente -->
+      <mat-form-field appearance="fill" class="wid-4">
+        <mat-label>Do cliente</mat-label>
+        <input matInput formControlName="de" placeholder="id do cliente"/>
+      </mat-form-field>
+      <!-- Ate o cliente -->
+      <mat-form-field appearance="fill" class="wid-4 space">
+        <mat-label>Até o cliente</mat-label>
+        <input matInput formControlName="ate" placeholder="id do cliente"/>
+      </mat-form-field>
+      <!-- Botao baixar-->
+      <button mat-raised-button color="primary"
+              [disabled]="aguardando" class="btn">
+        <mat-icon *ngIf="!aguardando">download</mat-icon>
+        <mat-icon *ngIf="aguardando">
+          <mat-spinner color="primary" diameter="20"></mat-spinner>
+        </mat-icon>
+        Baixar pdf
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

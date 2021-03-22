@@ -152,7 +152,7 @@ export class DocumentosFormComponent implements OnInit {
       this.opcoesClienteFiltrado = this.filtrarCliente(this.opcoesCliente, nomeCliente);
     } else {
         this.opcoesClienteFiltrado = [];
-      }
+    }
   }
 
   onClienteSelected(nomeCliente: string){
